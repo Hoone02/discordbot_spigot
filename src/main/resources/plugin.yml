@@ -1,0 +1,4 @@
+name: discord_test
+version: '${project.version}'
+main: org.example.hoon.discord_test.Discord_test
+api-version: 1.19
