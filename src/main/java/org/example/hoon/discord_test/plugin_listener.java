@@ -1,5 +1,6 @@
 package org.example.hoon.discord_test;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,23 +23,13 @@ public class plugin_listener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
 
-        for (Command command : Discord_test.getJda().getGuildById("868345253038534686").retrieveCommands().complete()) {
-            Bukkit.getLogger().info(command.getName());
-            //command.delete().queue();
-            command.editCommand().clearOptions().queue();
-        }
+//        for (Command command : Discord_test.getJda().getGuildById("868345253038534686").retrieveCommands().complete()) {
+//            Bukkit.getLogger().info(command.getName());
+//            command.delete().queue();
+//        }
 
-        List<CommandData> commandData = new ArrayList<>();
 
-        List<String> onlinePlayers = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
-        onlinePlayers.add(e.getPlayer().getName());
-
-        OptionData optionData = new OptionData(OptionType.STRING, "nickname", "아무튼 닉네임", true)
-                .addChoices(onlinePlayers.stream().map(s -> new Command.Choice(s, s)).collect(Collectors.toList()));
-        commandData.add(Commands.slash("register", "아무튼 회원가입")
-                .addOptions(optionData));
-
-        Discord_test.getJda().getGuildById("868345253038534686").updateCommands().addCommands(commandData).queue();
+        Discord_Listener.set();
 
         e.getPlayer().sendMessage("접속");
     }

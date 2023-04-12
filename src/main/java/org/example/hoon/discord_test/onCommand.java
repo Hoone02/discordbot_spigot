@@ -6,6 +6,10 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -22,15 +26,9 @@ import java.util.stream.Collectors;
 
 public class onCommand implements TabCompleter, CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String ds, @NotNull String[] args) {
 
-        Player p = (Player) commandSender;
-
-        JDA jda = Discord_test.getJda();
-        Guild guild = jda.getGuildById("868345253038534686");
-        Member member = guild.getMemberById("1095562270454587433");
-
-        member.modifyNickname("test").queue();
+        Discord_Listener.set();
 
         return false;
     }

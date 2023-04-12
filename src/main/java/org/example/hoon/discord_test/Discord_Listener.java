@@ -1,5 +1,6 @@
 package org.example.hoon.discord_test;
 
+import com.squareup.okhttp.OkHttpClient;
 import kotlin.collections.ArrayDeque;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -25,27 +26,18 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Discord_Listener extends ListenerAdapter {
     @Override
     public void onGuildReady(GuildReadyEvent e) {
-        List<CommandData> commandData = new ArrayList<>();
-
-        List<String> onlinePlayers = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
-
-        OptionData optionData = new OptionData(OptionType.STRING, "nickname", "아무튼 닉네임", true)
-                .addChoices(onlinePlayers.stream().map(s -> new Command.Choice(s, s)).collect(Collectors.toList()));
-        commandData.add(Commands.slash("register", "아무튼 회원가입")
-                .addOptions(optionData));
-
-        Discord_test.getJda().getGuildById("868345253038534686").updateCommands().addCommands(commandData).queue();
-
-        Bukkit.getLogger().info("GuildReady");
+        //set();
     }
 
-    public static void set(JDA jda) {
+    public static void set() {
         List<CommandData> commandData = new ArrayList<>();
 
         List<String> onlinePlayers = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
@@ -55,7 +47,9 @@ public class Discord_Listener extends ListenerAdapter {
         commandData.add(Commands.slash("register", "아무튼 회원가입")
                 .addOptions(optionData));
 
-        jda.updateCommands().addCommands(commandData).queue();
+        Discord_test.getJda().getGuildById("868345253038534686").upsertCommand(commandData.get(0)).queue();
+
+        Bukkit.getLogger().info("GuildReady");
     }
 
     @Override
@@ -73,7 +67,7 @@ public class Discord_Listener extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
         if (!e.getAuthor().isBot()) {
-
+            System.out.println("d");
         }
     }
 
