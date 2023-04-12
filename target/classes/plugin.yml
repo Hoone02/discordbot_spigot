@@ -2,3 +2,6 @@ name: discord_test
 version: '1.0-SNAPSHOT'
 main: org.example.hoon.discord_test.Discord_test
 api-version: 1.19
+commands:
+  discord:
+
