@@ -19,7 +19,7 @@ public final class Discord_test extends JavaPlugin {
 
 
     private static JDA jda;
-    private String discordToken = "MTA5NTU1Nzc0ODQ5NTc2NTYwNQ.GB8GRh.IIVs9tr84fpH1EEU1-5fVSpSyDFIMWsh35CXkA";
+    private String discordToken = "MTA5NTU1Nzc0ODQ5NTc2NTYwNQ.GcWcMQ.Q3SVIw1tZvuLmQTZwBxDyO6Y4r1Cfstc2Whfxo";
 
     @Override
     public void onEnable() {

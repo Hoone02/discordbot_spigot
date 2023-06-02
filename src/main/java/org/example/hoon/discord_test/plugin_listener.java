@@ -28,10 +28,19 @@ public class plugin_listener implements Listener {
 //            command.delete().queue();
 //        }
 
+        List<String> list = Discord_Listener.getOnlinePlayers();
 
-        Discord_Listener.set();
+        Discord_Listener.set(list);
 
         e.getPlayer().sendMessage("접속");
+    }
+
+    @EventHandler
+    public void onLeave(PlayerQuitEvent e) {
+        List<String> list = Discord_Listener.getOnlinePlayers();
+        list.remove(e.getPlayer().getName());
+
+        Discord_Listener.set(list);
     }
 
 }

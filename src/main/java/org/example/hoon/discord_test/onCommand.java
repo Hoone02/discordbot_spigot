@@ -28,7 +28,9 @@ public class onCommand implements TabCompleter, CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String ds, @NotNull String[] args) {
 
-        Discord_Listener.set();
+        List<String> list = Discord_Listener.getOnlinePlayers();
+
+        Discord_Listener.set(list);
 
         return false;
     }

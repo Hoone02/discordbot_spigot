@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInterac
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
+import net.dv8tion.jda.api.events.session.ShutdownEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -32,18 +33,31 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Discord_Listener extends ListenerAdapter {
+
+
+
     @Override
     public void onGuildReady(GuildReadyEvent e) {
         //set();
     }
 
-    public static void set() {
+    @Override
+    public void onShutdown(ShutdownEvent e) {
+        for (Command command : Discord_test.getJda().getGuildById("868345253038534686").retrieveCommands().complete()) {
+            Bukkit.getLogger().info(command.getName());
+            command.delete().queue();
+        }
+    }
+
+    public static List<String> getOnlinePlayers() {
+        return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+    }
+
+    public static void set(List<String> list) {
         List<CommandData> commandData = new ArrayList<>();
 
-        List<String> onlinePlayers = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
-
         OptionData optionData = new OptionData(OptionType.STRING, "nickname", "아무튼 닉네임", true)
-                .addChoices(onlinePlayers.stream().map(s -> new Command.Choice(s, s)).collect(Collectors.toList()));
+                .addChoices(list.stream().map(s -> new Command.Choice(s, s)).collect(Collectors.toList()));
         commandData.add(Commands.slash("register", "아무튼 회원가입")
                 .addOptions(optionData));
 
@@ -58,6 +72,11 @@ public class Discord_Listener extends ListenerAdapter {
 
         if (command.equals("register")) {
             String name = e.getOption("nickname").getAsString();
+            if (Bukkit.getPlayer(name) == null) {
+                e.reply("마인크래프트에 접속중인 플레이어가 아닙니다.").queue();
+                return;
+            }
+
             e.reply("마인크래프트 " + name + "님으로 인증요청 되었습니다.").queue();
             Bukkit.getPlayer(name).sendMessage("디스코드의 " + e.getUser().getName() + "계정으로 인증요청 되었습니다.");
             System.out.println(e.getCommandId());
@@ -70,5 +89,4 @@ public class Discord_Listener extends ListenerAdapter {
             System.out.println("d");
         }
     }
-
 }
